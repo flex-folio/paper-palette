@@ -137,9 +137,26 @@ export const resume = createSlice({
     name: "resume",
     initialState,
     reducers: {
-        setInfo: () => {},
+        changeInfoBio: (state, { payload }: { payload: number }) => {
+            state.info.bio = state.info.bio.map((_bio, index) => {
+                _bio.checked = index === payload ? true : false;
+                return _bio;
+            });
+        },
+        addInfoBio: (state, { payload }: { payload: string }) => {
+            state.info.bio.push({
+                checked: false,
+                value: payload,
+            });
+        },
+        removeInfoBio: (state, { payload }: { payload: number }) => {
+            state.info.bio = state.info.bio.filter((_bio, index) => {
+                if (index === payload) return null;
+                return _bio;
+            });
+        },
     },
 });
 
-export const {} = resume.actions;
+export const { changeInfoBio, addInfoBio, removeInfoBio } = resume.actions;
 export default resume.reducer;

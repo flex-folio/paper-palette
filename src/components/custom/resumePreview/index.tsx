@@ -19,7 +19,13 @@ export default function ResumePreview() {
         <section className="bg-white w-[7in] min-h-[9.25in] flex shadow-2xl">
             <aside className="bg-secondary ps-6 px-4 py-10 w-52 min-w-52 space-y-4">
                 <p className="font-semibold">{resume.info.name}</p>
-                <p className="text-xs text-muted">{resume.info.bio[0].value}</p>
+                {resume.info.bio.map((_bio) => (
+                    <>
+                        {_bio.checked && (
+                            <p className="text-xs text-muted">{_bio.value}</p>
+                        )}
+                    </>
+                ))}
                 <Separator />
                 <SideBarCard
                     icon={<MailIcon size="0.8em" />}
