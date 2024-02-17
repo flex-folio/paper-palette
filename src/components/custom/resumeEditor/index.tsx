@@ -8,7 +8,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 import PointCard from "./PointCard";
 import { useDispatch } from "react-redux";
-import { changeInfoBio, removeInfoBio } from "@/redux/features/resumeSlice";
+import {
+    changeInfoBio,
+    removeInfoBio,
+    toggleSkill,
+} from "@/redux/features/resumeSlice";
 import MiniCard from "./MiniCard";
 import { AddBioForm } from "./AddBioFrom";
 
@@ -18,7 +22,7 @@ export default function ResumeEditor() {
 
     return (
         <section className="bg-white">
-            <section className="space-y-2">
+            <section className="space-y-4">
                 <Heading>Profile</Heading>
                 <Card>
                     <CardContent>
@@ -62,21 +66,50 @@ export default function ResumeEditor() {
                             />
                             <MiniCard value={resume.info.phoneNumber} />
                         </PointCard>
-                        <Label>Socials</Label>
-                        <PointCard>
-                            <Checkbox
-                                checked={!!resume.socials.linkedin.url}
-                                className="my-auto"
-                            />
-                            <MiniCard value={resume.socials.linkedin.url} />
-                        </PointCard>
-                        <PointCard>
-                            <Checkbox
-                                checked={!!resume.socials.github.url}
-                                className="my-auto"
-                            />
-                            <MiniCard value={resume.socials.github.url} />
-                        </PointCard>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardContent>
+                        {resume.socials.map((social) => (
+                            <>
+                                <Label>{social.name}</Label>
+                                <PointCard>
+                                    <Checkbox
+                                        checked={social.checked}
+                                        className="my-auto"
+                                    />
+                                    <MiniCard value={social.url} />
+                                </PointCard>
+                            </>
+                        ))}
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardContent>
+                        {resume.sidebarPoints.map((skills) => (
+                            <>
+                                <Label className="capitalize">
+                                    {skills.heading}
+                                </Label>
+                                {skills.points.map((skill, index) => (
+                                    <PointCard>
+                                        <Checkbox
+                                            onClick={() =>
+                                                dispatch(
+                                                    toggleSkill({
+                                                        heading: skills.heading,
+                                                        index,
+                                                    })
+                                                )
+                                            }
+                                            checked={skill.checked}
+                                            className="my-auto"
+                                        />
+                                        <MiniCard value={skill.value} />
+                                    </PointCard>
+                                ))}
+                            </>
+                        ))}
                     </CardContent>
                 </Card>
             </section>

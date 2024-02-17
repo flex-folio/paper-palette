@@ -7,21 +7,18 @@ export type ResumeType = {
         address: { checked: boolean; value: string }[];
         bio: { value: string; checked: boolean }[];
     };
-    sidebarPoints: {
-        heading: string;
-        points: { checked: true; order: number; value: string }[];
-    }[];
+    sidebarPoints: SkillType[];
     socials: SocialMediaType[];
     projects: ProjectType[];
     educations: EducationType[];
     experiences: ExperienceType[];
 };
 
-type ProjectType = {
+export type ProjectType = {
     title: string;
     description: {
         checked: boolean;
-        point: string;
+        value: string;
         order: number;
     }[];
     technologiesUsed: { checked: boolean; value: string; order: number }[];
@@ -32,13 +29,13 @@ type ProjectType = {
     checked: boolean;
 };
 
-type EducationType = {
+export type EducationType = {
     title: string;
     date: Date;
     description: { checked: boolean; value: string; order: number }[];
 };
 
-type ExperienceType = {
+export type ExperienceType = {
     company: string;
     position: string;
     date: {
@@ -48,9 +45,14 @@ type ExperienceType = {
     points: { checked: boolean; value: string; order: number }[];
 };
 
-type SocialMediaType = {
+export type SocialMediaType = {
     name: string;
     url: string;
     username: string;
     checked: boolean;
+};
+
+export type SkillType = {
+    heading: string;
+    points: { checked: boolean; order: number; value: string }[];
 };

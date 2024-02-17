@@ -4,10 +4,22 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState: ResumeType = {
     info: {
         name: "Raazi Muhammed",
-        position: ["MERN Developer", "Software Developer"],
+        position: [
+            { checked: true, value: "MERN Developer" },
+            { checked: false, value: "Software Developer" },
+        ],
         email: "raazi@gmail.com",
         phoneNumber: "+91 2341972233",
-        address: ["Calicut, Kerala", "Bangluru, India"],
+        address: [
+            {
+                checked: true,
+                value: "Calicut, Kerala",
+            },
+            {
+                checked: false,
+                value: "Bangluru, India",
+            },
+        ],
         bio: [
             {
                 checked: true,
@@ -19,58 +31,170 @@ const initialState: ResumeType = {
             },
         ],
     },
-    expertise: [
-        "Node.js",
-        "Express.js",
-        "Typescript",
-        "React.js",
-        "Redux",
-        "MongoDB",
-        "MVC architecutre",
-        "SCSS",
-        "Jest",
-        "RTL",
-        "Figma",
-        "Firebase",
-        "Docker",
-    ],
-    integrations: [
-        "Socket.IO",
-        "Razorpay",
-        "Cloudinary",
-        "SendGrid",
-        "Firebase",
-        "Node Mailer",
-        "Multer",
-    ],
-    socials: {
-        linkedin: {
-            url: "www.linkden/raazi",
-            name: "raazi-muahmmed",
+    sidebarPoints: [
+        {
+            heading: "expertise",
+            points: [
+                {
+                    checked: false,
+                    order: 1,
+                    value: "Node.js",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Express.js",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Typescript",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "React.js",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Redux",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "MongoDB",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "MVC architecutre",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "SCSS",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Jest",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "RTL",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Figma",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Firebase",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Docker",
+                },
+            ],
         },
-        github: {
-            url: "www.linkden/raazi",
-            name: "raazi-muahmmed",
+        {
+            heading: "integrations",
+
+            points: [
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Socket.IO",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Razorpay",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Cloudinary",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "SendGrid",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Firebase",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Node Mailer",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Multer",
+                },
+            ],
         },
-    },
+    ],
+    socials: [
+        {
+            checked: true,
+            name: "Linkden",
+            url: "www.linkden/raazi",
+            username: "raazi-muahmmed",
+        },
+        {
+            checked: true,
+            name: "Github",
+            url: "www.linkden/raazi",
+            username: "raazi-muahmmed",
+        },
+    ],
     projects: [
         {
             title: "Lorem Ipsum Project",
             description: [
                 {
+                    order: 1,
                     checked: true,
-                    point: "Lorem ipsum dolor sit amet.",
+                    value: "Lorem ipsum dolor sit amet.",
                 },
                 {
+                    order: 1,
                     checked: false,
-                    point: "Consectetur adipiscing elit.",
+                    value: "Consectetur adipiscing elit.",
                 },
                 {
+                    order: 1,
                     checked: true,
-                    point: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    value: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 },
             ],
-            technologiesUsed: ["HTML5", "CSS3", "JavaScript"],
+            technologiesUsed: [
+                {
+                    checked: true,
+                    order: 1,
+                    value: "HTML5",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "CSS3",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "JavaScript",
+                },
+            ],
             urls: {
                 gitHub: "https://github.com/username/lorem-ipsum-project",
                 liveLink: "https://example.com/lorem-ipsum",
@@ -81,15 +205,33 @@ const initialState: ResumeType = {
             title: "Dummy App",
             description: [
                 {
-                    checked: false,
-                    point: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                    order: 1,
+                    checked: true,
+                    value: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                },
+                {
+                    order: 1,
+                    checked: true,
+                    value: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                },
+            ],
+            technologiesUsed: [
+                {
+                    checked: true,
+                    order: 1,
+                    value: "React",
                 },
                 {
                     checked: true,
-                    point: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                    order: 1,
+                    value: "Node.js",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "MongoDB",
                 },
             ],
-            technologiesUsed: ["React", "Node.js", "MongoDB"],
             urls: {
                 gitHub: "https://github.com/username/dummy-app",
                 liveLink: "https://example.com/dummy-app",
@@ -106,9 +248,21 @@ const initialState: ResumeType = {
                 to: new Date("2022-05-31"),
             },
             points: [
-                "Developed and maintained web applications using React and Node.js.",
-                "Collaborated with cross-functional teams to deliver high-quality software solutions.",
-                "Implemented new features and optimized existing code for better performance.",
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Developed and maintained web applications using React and Node.js.",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Collaborated with cross-functional teams to deliver high-quality software solutions.",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Implemented new features and optimized existing code for better performance.",
+                },
             ],
         },
         {
@@ -119,9 +273,21 @@ const initialState: ResumeType = {
                 to: new Date("2019-12-31"),
             },
             points: [
-                "Analyzed and interpreted complex data sets to provide actionable insights.",
-                "Created data visualizations and reports using tools like Tableau and Power BI.",
-                "Collaborated with business stakeholders to understand data requirements and deliver solutions.",
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Analyzed and interpreted complex data sets to provide actionable insights.",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Created data visualizations and reports using tools like Tableau and Power BI.",
+                },
+                {
+                    checked: true,
+                    order: 1,
+                    value: "Collaborated with business stakeholders to understand data requirements and deliver solutions.",
+                },
             ],
         },
     ],
@@ -129,7 +295,13 @@ const initialState: ResumeType = {
         {
             title: "Bachelor of Science in Computer Science",
             date: new Date("2016-09-01"),
-            description: "University of Science and Technology, Cityville",
+            description: [
+                {
+                    checked: true,
+                    order: 1,
+                    value: "University of Science and Technology, Cityville",
+                },
+            ],
         },
     ],
 };
@@ -155,8 +327,20 @@ export const resume = createSlice({
                 return _bio;
             });
         },
+        toggleSkill: (
+            state,
+            { payload }: { payload: { heading: string; index: number } }
+        ) => {
+            state.sidebarPoints.map((cat) => {
+                if (cat.heading === payload.heading) {
+                    const currentState = cat.points[payload.index].checked;
+                    cat.points[payload.index].checked = !currentState;
+                }
+            });
+        },
     },
 });
 
-export const { changeInfoBio, addInfoBio, removeInfoBio } = resume.actions;
+export const { changeInfoBio, addInfoBio, removeInfoBio, toggleSkill } =
+    resume.actions;
 export default resume.reducer;
