@@ -1,11 +1,23 @@
-export const resume = {
+import { ResumeType } from "@/types/resumeTypes";
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState: ResumeType = {
     info: {
         name: "Raazi Muhammed",
-        position: "MERN Developer",
+        position: ["MERN Developer", "Software Developer"],
         email: "raazi@gmail.com",
         phoneNumber: "+91 2341972233",
-        address: "Calicut, Kerala",
-        bio: "Self-Taught Graphic Designer Turned Self-Taught  Web Developer",
+        address: ["Calicut, Kerala", "Bangluru, India"],
+        bio: [
+            {
+                checked: true,
+                value: "Self-Taught Graphic Designer Turned Self-Taught  Web Developer",
+            },
+            {
+                checked: false,
+                value: "Secondary bio",
+            },
+        ],
     },
     expertise: [
         "Node.js",
@@ -121,61 +133,30 @@ export const resume = {
         },
     ],
 };
+export const resume = createSlice({
+    name: "resume",
+    initialState,
+    reducers: {
+        changeInfoBio: (state, { payload }: { payload: number }) => {
+            state.info.bio = state.info.bio.map((_bio, index) => {
+                _bio.checked = index === payload ? true : false;
+                return _bio;
+            });
+        },
+        addInfoBio: (state, { payload }: { payload: string }) => {
+            state.info.bio.push({
+                checked: false,
+                value: payload,
+            });
+        },
+        removeInfoBio: (state, { payload }: { payload: number }) => {
+            state.info.bio = state.info.bio.filter((_bio, index) => {
+                if (index === payload) return null;
+                return _bio;
+            });
+        },
+    },
+});
 
-type Resume = {
-    info: {
-        name: String;
-        position: String[];
-        email: String;
-        phoneNumber: String;
-        address: String[];
-        bio: String[];
-    };
-    expertise: String[];
-    integrations: String[];
-    socials: {
-        linkedin: {
-            url: String;
-            name: String;
-        };
-        github: {
-            url: String;
-            name: String;
-        };
-    };
-    projects: [
-        {
-            title: String;
-            description: [
-                {
-                    checked: Boolean;
-                    point: String;
-                }
-            ];
-            technologiesUsed: String[];
-            urls: {
-                gitHub?: String;
-                liveLink?: String;
-            };
-            checked: boolean;
-        }
-    ];
-    education: [
-        {
-            title: String;
-            date: Date;
-            description: String;
-        }
-    ];
-    experience: [
-        {
-            company: String;
-            position: String;
-            date: {
-                from: Date;
-                to: Date;
-            };
-            points: String[];
-        }
-    ];
-};
+export const { changeInfoBio, addInfoBio, removeInfoBio } = resume.actions;
+export default resume.reducer;
