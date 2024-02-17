@@ -1,50 +1,58 @@
 export type ResumeType = {
     info: {
         name: string;
-        position: string[];
+        position: { checked: boolean; value: string }[];
         email: string;
         phoneNumber: string;
-        address: string[];
+        address: { checked: boolean; value: string }[];
         bio: { value: string; checked: boolean }[];
     };
-    expertise: string[];
-    integrations: string[];
-    socials: {
-        linkedin: {
-            url: string;
-            name: string;
-        };
-        github: {
-            url: string;
-            name: string;
-        };
-    };
-    projects: {
-        title: string;
-        description: {
-            checked: boolean;
-            point: string;
-        }[];
-        technologiesUsed: string[];
-        urls: {
-            gitHub?: string;
-            liveLink?: string;
-        };
-        checked: boolean;
-    }[];
+    sidebarPoints: SkillType[];
+    socials: SocialMediaType[];
+    projects: ProjectType[];
+    educations: EducationType[];
+    experiences: ExperienceType[];
+};
 
-    educations: {
-        title: string;
-        date: Date;
-        description: string;
+export type ProjectType = {
+    title: string;
+    description: {
+        checked: boolean;
+        value: string;
+        order: number;
     }[];
-    experiences: {
-        company: string;
-        position: string;
-        date: {
-            from: Date;
-            to: Date;
-        };
-        points: string[];
-    }[];
+    technologiesUsed: { checked: boolean; value: string; order: number }[];
+    urls: {
+        gitHub?: string;
+        liveLink?: string;
+    };
+    checked: boolean;
+};
+
+export type EducationType = {
+    title: string;
+    date: Date;
+    description: { checked: boolean; value: string; order: number }[];
+};
+
+export type ExperienceType = {
+    company: string;
+    position: string;
+    date: {
+        from: Date;
+        to: Date;
+    };
+    points: { checked: boolean; value: string; order: number }[];
+};
+
+export type SocialMediaType = {
+    name: string;
+    url: string;
+    username: string;
+    checked: boolean;
+};
+
+export type SkillType = {
+    heading: string;
+    points: { checked: boolean; order: number; value: string }[];
 };
