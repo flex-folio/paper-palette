@@ -6,36 +6,43 @@ import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addInfoBio } from "@/redux/features/resumeSlice";
+import { addContactInfo, addSocialMedia } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-    bio: z.string().min(10, "Bio should atleast 10 characters").max(100),
+    type: z.string().min(1),
+    value: z.string(),
 });
 
-export function AddBioForm() {
+export function AddContactInfo() {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            bio: "",
+            type: "",
+            value: "",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addInfoBio(values.bio));
+        dispatch(addContactInfo(values));
         setShowForm(false);
         reset();
     }
@@ -46,13 +53,40 @@ export function AddBioForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="bio"
+                            name="type"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an bio</FormLabel>
+                                    <FormLabel>Type</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="phone">
+                                                Phone
+                                            </SelectItem>
+                                            <SelectItem value="email">
+                                                Email
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="value"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Value</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Add a bio..."
+                                        <Input
+                                            placeholder="Add value"
                                             {...field}
                                         />
                                     </FormControl>
@@ -80,7 +114,7 @@ export function AddBioForm() {
                         onClick={() => setShowForm(true)}
                         className="w-full border-2 border-blue-200 border-dashed"
                         variant="ghost">
-                        Add points to bio
+                        Edit contact info
                     </Button>
                 </div>
             )}

@@ -2,12 +2,12 @@ export type ResumeType = {
     info: {
         name: string;
         position: { checked: boolean; value: string }[];
-        email: string;
-        phoneNumber: string;
+        email: { checked: boolean; value: string };
+        phone: { checked: boolean; value: string };
         address: { checked: boolean; value: string }[];
         bio: { value: string; checked: boolean }[];
     };
-    sidebarPoints: SkillType[];
+    skills: SkillType[];
     socials: SocialMediaType[];
     projects: ProjectType[];
     educations: EducationType[];

@@ -18,7 +18,7 @@ export default function ResumePreview() {
     const resume = useAppSelector((state) => state.resumeReducer);
 
     return (
-        <section className="bg-white w-[7in] min-h-[9.25in] flex shadow-2xl">
+        <section className="bg-white w-[7in] min-h-[9.25in] flex shadow-2xl h-fit">
             <aside className="bg-secondary ps-6 px-4 py-10 w-52 min-w-52 space-y-4">
                 <p className="font-semibold">{resume.info.name}</p>
                 {resume.info.bio.map((_bio) => {
@@ -29,17 +29,23 @@ export default function ResumePreview() {
                     }
                 })}
                 <Separator />
-                <SideBarCard
-                    icon={<MailIcon size="0.8em" />}
-                    title="Email"
-                    caption={resume.info.email}
-                />
-                <SideBarCard
-                    icon={<PhoneIcon size="0.8em" />}
-                    title="Phone"
-                    caption={resume.info.phoneNumber}
-                />
-                <Separator />
+                {resume.info.email.checked && (
+                    <SideBarCard
+                        icon={<MailIcon size="0.8em" />}
+                        title="Email"
+                        caption={resume.info.email.value}
+                    />
+                )}
+                {resume.info.phone.checked && (
+                    <SideBarCard
+                        icon={<PhoneIcon size="0.8em" />}
+                        title="Phone"
+                        caption={resume.info.phone.value}
+                    />
+                )}
+                {resume.info.phone.checked || resume.info.email.checked ? (
+                    <Separator />
+                ) : null}
                 {resume.socials.map((_socials) => (
                     <SideBarCard
                         icon={<LinkedinIcon size="0.8em" />}
@@ -48,7 +54,7 @@ export default function ResumePreview() {
                     />
                 ))}
                 <Separator />
-                {resume.sidebarPoints.map((point) => (
+                {resume.skills.map((point) => (
                     <SkillCard skill={point} />
                 ))}
             </aside>
