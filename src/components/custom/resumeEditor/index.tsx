@@ -12,11 +12,14 @@ import {
     changeInfoBio,
     removeInfoBio,
     removeSkill,
+    removeSocialMedia,
     toggleSkill,
+    toggleSocialMedia,
 } from "@/redux/features/resumeSlice";
 import MiniCard from "./MiniCard";
-import { AddBioForm } from "./AddBioFrom";
-import { AddSkillForm } from "./AddSkillForm";
+import { AddBioForm } from "./forms/AddBioForm";
+import { AddSkillForm } from "./forms/AddSkillForm";
+import { AddSocialMedia } from "./forms/AddSocialMedia";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -72,18 +75,31 @@ export default function ResumeEditor() {
                 </Card>
                 <Card>
                     <CardContent>
-                        {resume.socials.map((social) => (
+                        {resume.socials.map((social, i) => (
                             <>
                                 <Label>{social.name}</Label>
                                 <PointCard>
                                     <Checkbox
+                                        onClick={() =>
+                                            dispatch(
+                                                toggleSocialMedia({ index: i })
+                                            )
+                                        }
                                         checked={social.checked}
                                         className="my-auto"
                                     />
-                                    <MiniCard value={social.url} />
+                                    <MiniCard
+                                        deleteFunction={() =>
+                                            dispatch(
+                                                removeSocialMedia({ index: i })
+                                            )
+                                        }
+                                        value={social.url}
+                                    />
                                 </PointCard>
                             </>
                         ))}
+                        <AddSocialMedia />
                     </CardContent>
                 </Card>
                 <Card>

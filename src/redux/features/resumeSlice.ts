@@ -370,6 +370,37 @@ export const resume = createSlice({
                 }
             });
         },
+        addSocialMedia: (
+            state,
+            {
+                payload,
+            }: { payload: { url: string; username: string; name: string } }
+        ) => {
+            state.socials.push({
+                checked: true,
+                url: payload.url,
+                username: payload.username,
+                name: payload.name,
+            });
+        },
+        toggleSocialMedia: (
+            state,
+            { payload }: { payload: { index: number } }
+        ) => {
+            state.socials.map((social, i) => {
+                if (i === payload.index) {
+                    social.checked = !social.checked;
+                }
+            });
+        },
+        removeSocialMedia: (
+            state,
+            { payload }: { payload: { index: number } }
+        ) => {
+            state.socials = state.socials.filter((social, i) => {
+                if (i !== payload.index) return social;
+            });
+        },
     },
 });
 
@@ -380,5 +411,8 @@ export const {
     toggleSkill,
     addSkill,
     removeSkill,
+    addSocialMedia,
+    toggleSocialMedia,
+    removeSocialMedia,
 } = resume.actions;
 export default resume.reducer;
