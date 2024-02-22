@@ -11,7 +11,7 @@ export default function MiniCard({
 }) {
     return (
         <div className="p-2 min-h-10 w-full text-sm py-auto flex align-middle">
-            <p className="my-auto h-fit w-full">{value}</p>
+            <p className="pe-4 my-auto h-fit w-full">{value}</p>
 
             <Button
                 onClick={() => {

@@ -31,7 +31,7 @@ const initialState: ResumeType = {
             },
         ],
     },
-    sidebarPoints: [
+    skills: [
         {
             heading: "expertise",
             points: [
@@ -331,16 +331,54 @@ export const resume = createSlice({
             state,
             { payload }: { payload: { heading: string; index: number } }
         ) => {
-            state.sidebarPoints.map((cat) => {
+            state.skills.map((cat) => {
                 if (cat.heading === payload.heading) {
                     const currentState = cat.points[payload.index].checked;
                     cat.points[payload.index].checked = !currentState;
                 }
             });
         },
+        addSkill: (
+            state,
+            { payload }: { payload: { heading: string; value: string } }
+        ) => {
+            for (let i = 0; i < state.skills.length; i++) {
+                if (
+                    state.skills[i].heading ==
+                    payload.heading.toLocaleLowerCase()
+                ) {
+                    console.log(state.skills);
+
+                    state.skills[i].points.push({
+                        checked: true,
+                        order: 1,
+                        value: payload.value,
+                    });
+                    break;
+                }
+            }
+        },
+        removeSkill: (
+            state,
+            { payload }: { payload: { heading: string; index: number } }
+        ) => {
+            state.skills.map((cat) => {
+                if (cat.heading === payload.heading.toLocaleLowerCase()) {
+                    cat.points = cat.points.filter((point, i) => {
+                        if (i !== payload.index) return point;
+                    });
+                }
+            });
+        },
     },
 });
 
-export const { changeInfoBio, addInfoBio, removeInfoBio, toggleSkill } =
-    resume.actions;
+export const {
+    changeInfoBio,
+    addInfoBio,
+    removeInfoBio,
+    toggleSkill,
+    addSkill,
+    removeSkill,
+} = resume.actions;
 export default resume.reducer;

@@ -48,7 +48,7 @@ export default function ResumePreview() {
                     />
                 ))}
                 <Separator />
-                {resume.sidebarPoints.map((point) => (
+                {resume.skills.map((point) => (
                     <SkillCard skill={point} />
                 ))}
             </aside>

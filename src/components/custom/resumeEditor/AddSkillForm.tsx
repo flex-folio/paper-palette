@@ -13,27 +13,36 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addInfoBio } from "@/redux/features/resumeSlice";
+import { addSkill } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
-    bio: z.string().min(10, "Bio should atleast 10 characters").max(100),
+    heading: z.string().min(1),
+    value: z.string().min(1),
 });
 
-export function AddBioForm() {
+export function AddSkillForm() {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            bio: "",
+            value: "",
+            heading: "Expertise",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addInfoBio(values.bio));
+        dispatch(addSkill(values));
         setShowForm(false);
         reset();
     }
@@ -44,10 +53,37 @@ export function AddBioForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="bio"
+                            name="heading"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an bio</FormLabel>
+                                    <FormLabel>Heading</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose section" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="Expertise">
+                                                Expertise
+                                            </SelectItem>
+                                            <SelectItem value="Integrations">
+                                                Integrations
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="value"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Heading</FormLabel>
                                     <FormControl>
                                         <Textarea
                                             placeholder="Add a bio..."
@@ -78,7 +114,7 @@ export function AddBioForm() {
                         onClick={() => setShowForm(true)}
                         className="w-full border-2 border-blue-200 border-dashed"
                         variant="ghost">
-                        Add points to bio
+                        Add a skill
                     </Button>
                 </div>
             )}

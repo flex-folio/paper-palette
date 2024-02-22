@@ -7,7 +7,7 @@ export type ResumeType = {
         address: { checked: boolean; value: string }[];
         bio: { value: string; checked: boolean }[];
     };
-    sidebarPoints: SkillType[];
+    skills: SkillType[];
     socials: SocialMediaType[];
     projects: ProjectType[];
     educations: EducationType[];

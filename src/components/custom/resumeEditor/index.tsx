@@ -11,10 +11,12 @@ import { useDispatch } from "react-redux";
 import {
     changeInfoBio,
     removeInfoBio,
+    removeSkill,
     toggleSkill,
 } from "@/redux/features/resumeSlice";
 import MiniCard from "./MiniCard";
 import { AddBioForm } from "./AddBioFrom";
+import { AddSkillForm } from "./AddSkillForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -86,32 +88,48 @@ export default function ResumeEditor() {
                 </Card>
                 <Card>
                     <CardContent>
-                        {resume.sidebarPoints.map((skills) => (
+                        {resume.skills.map((skills) => (
                             <>
                                 <Label className="capitalize">
                                     {skills.heading}
                                 </Label>
-                                {skills.points.map((skill, index) => (
-                                    <PointCard>
-                                        <Checkbox
-                                            onClick={() =>
-                                                dispatch(
-                                                    toggleSkill({
-                                                        heading: skills.heading,
-                                                        index,
-                                                    })
-                                                )
-                                            }
-                                            checked={skill.checked}
-                                            className="my-auto"
-                                        />
-                                        <MiniCard value={skill.value} />
-                                    </PointCard>
-                                ))}
+                                <div className="flex flex-wrap gap-x-2">
+                                    {skills.points.map((skill, index) => (
+                                        <PointCard>
+                                            <Checkbox
+                                                onClick={() =>
+                                                    dispatch(
+                                                        toggleSkill({
+                                                            heading:
+                                                                skills.heading,
+                                                            index,
+                                                        })
+                                                    )
+                                                }
+                                                checked={skill.checked}
+                                                className="my-auto"
+                                            />
+                                            <MiniCard
+                                                deleteFunction={() =>
+                                                    dispatch(
+                                                        removeSkill({
+                                                            heading:
+                                                                skills.heading,
+                                                            index,
+                                                        })
+                                                    )
+                                                }
+                                                value={skill.value}
+                                            />
+                                        </PointCard>
+                                    ))}
+                                </div>
                             </>
                         ))}
+                        <AddSkillForm />
                     </CardContent>
                 </Card>
+                <div className="h-44"></div>
             </section>
         </section>
     );
