@@ -8,8 +8,8 @@ const initialState: ResumeType = {
             { checked: true, value: "MERN Developer" },
             { checked: false, value: "Software Developer" },
         ],
-        email: "raazi@gmail.com",
-        phoneNumber: "+91 2341972233",
+        email: { checked: true, value: "raazi@gmail.com" },
+        phone: { checked: true, value: "+91 2341972233" },
         address: [
             {
                 checked: true,
@@ -401,18 +401,40 @@ export const resume = createSlice({
                 if (i !== payload.index) return social;
             });
         },
+        addContactInfo: (
+            state,
+            { payload }: { payload: { type: string; value: string } }
+        ) => {
+            // @ts-ignore
+            state.info[payload.type].value = payload.value;
+        },
+        toggleContactInfo: (
+            state,
+            { payload }: { payload: { type: string } }
+        ) => {
+            // @ts-ignore
+            const currentState = state.info[payload.type].checked;
+            // @ts-ignore
+            state.info[payload.type].checked = !currentState;
+        },
+        editName: (state, { payload }: { payload: string }) => {
+            state.info.name = payload;
+        },
     },
 });
 
 export const {
+    editName,
     changeInfoBio,
     addInfoBio,
     removeInfoBio,
     toggleSkill,
     addSkill,
+    addContactInfo,
     removeSkill,
     addSocialMedia,
     toggleSocialMedia,
     removeSocialMedia,
+    toggleContactInfo,
 } = resume.actions;
 export default resume.reducer;

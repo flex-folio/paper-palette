@@ -29,17 +29,23 @@ export default function ResumePreview() {
                     }
                 })}
                 <Separator />
-                <SideBarCard
-                    icon={<MailIcon size="0.8em" />}
-                    title="Email"
-                    caption={resume.info.email}
-                />
-                <SideBarCard
-                    icon={<PhoneIcon size="0.8em" />}
-                    title="Phone"
-                    caption={resume.info.phoneNumber}
-                />
-                <Separator />
+                {resume.info.email.checked && (
+                    <SideBarCard
+                        icon={<MailIcon size="0.8em" />}
+                        title="Email"
+                        caption={resume.info.email.value}
+                    />
+                )}
+                {resume.info.phone.checked && (
+                    <SideBarCard
+                        icon={<PhoneIcon size="0.8em" />}
+                        title="Phone"
+                        caption={resume.info.phone.value}
+                    />
+                )}
+                {resume.info.phone.checked || resume.info.email.checked ? (
+                    <Separator />
+                ) : null}
                 {resume.socials.map((_socials) => (
                     <SideBarCard
                         icon={<LinkedinIcon size="0.8em" />}
