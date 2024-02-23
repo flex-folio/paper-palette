@@ -7,7 +7,9 @@ export default function Home() {
         <>
             <Navbar />
             <main className="grid grid-cols-2 mt-20 container gap-8">
-                <ResumeEditor />
+                <div className="h-screen overflow-auto">
+                    <ResumeEditor />
+                </div>
                 <ResumePreview />
             </main>
         </>
