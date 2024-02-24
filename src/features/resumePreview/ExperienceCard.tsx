@@ -1,4 +1,4 @@
-import { ExperienceType } from "@/types/resumeTypes";
+import { ExperienceType } from "@/lib/types";
 import { Minus as DateSeparatorIcon } from "lucide-react";
 
 export default function ExperienceCard({

@@ -1,4 +1,4 @@
-import { EducationType } from "@/types/resumeTypes";
+import { EducationType } from "@/lib/types";
 
 export default function EducationCard({
     education,

@@ -1,4 +1,4 @@
-import { SkillType } from "@/types/resumeTypes";
+import { SkillType } from "@/lib/types";
 import Heading from "./Heading";
 
 export default function SkillCard({ skill }: { skill: SkillType }) {

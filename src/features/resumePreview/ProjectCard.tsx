@@ -1,4 +1,4 @@
-import { ProjectType } from "@/types/resumeTypes";
+import { ProjectType } from "@/lib/types";
 
 export default function ProjectCard({ project }: { project: ProjectType }) {
     return (
