@@ -1,5 +1,7 @@
 "use client";
 
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import Heading from "@/features/resumePreview/Heading";
 import SideBarCard from "@/features/resumePreview/SideBarCard";
 import { Separator } from "@/components/ui/separator";
@@ -8,18 +10,42 @@ import {
     Phone as PhoneIcon,
     Linkedin as LinkedinIcon,
     Github as GithubIcon,
+    ArrowDownToLine as DownloadIcon,
 } from "lucide-react";
 import { useAppSelector } from "@/redux/store";
 import ProjectCard from "./ProjectCard";
 import ExperienceCard from "./ExperienceCard";
 import EducationCard from "./EducationCard";
 import SkillCard from "./SkillCard";
+import { Button } from "@/components/ui/button";
+import { useRef } from "react";
 
 export default function ResumePreview() {
     const resume = useAppSelector((state) => state.resumeReducer);
+    const pdfRef = useRef(null);
 
+    const handleDownload = async () => {
+        console.log("hadle downlaod hit");
+
+        const salesReportContentElement = pdfRef.current;
+        if (!salesReportContentElement) {
+            console.log("invlid ref");
+
+            return;
+        }
+        const canvas = await html2canvas(salesReportContentElement, {
+            scrollY: -window.scrollY,
+        });
+        const imageData = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF("p", "px", [canvas.width, canvas.height]);
+        pdf.addImage(imageData, "PNG", 0, 0, canvas.width, canvas.height);
+        pdf.save("resume.pdf");
+    };
     return (
-        <section className="my-auto bg-white w-[7in] min-h-[9.25in] flex shadow-2xl h-fit">
+        <section
+            ref={pdfRef}
+            className="my-auto bg-white w-[7in] min-h-[9.25in] flex shadow-2xl h-fit relative">
             <aside className="bg-secondary ps-6 px-4 py-10 w-52 min-w-52 space-y-4">
                 <p className="font-semibold">{resume.info.name}</p>
                 {resume.info.bio.map((_bio) => {
@@ -98,6 +124,11 @@ export default function ResumePreview() {
                     </section>
                 </div>
             </section>
+            <div className="w-[6.8in] flex -bottom-32 absolute">
+                <Button onClick={handleDownload} className="mx-auto mb-20">
+                    <DownloadIcon size="1.2em" className="me-2" /> Download
+                </Button>
+            </div>
         </section>
     );
 }
