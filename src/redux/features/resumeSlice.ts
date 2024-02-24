@@ -308,6 +308,62 @@ export const resume = createSlice({
                 points: [],
             });
         },
+        addEducationDescription: (
+            state,
+            {
+                payload,
+            }: { payload: { educationIndex: number; description: string } }
+        ) => {
+            state.educations[payload.educationIndex].description.push({
+                checked: true,
+                order: 1,
+                value: payload.description,
+            });
+        },
+        toggleEducationDescription: (
+            state,
+            {
+                payload,
+            }: { payload: { educationIndex: number; descriptionIndex: number } }
+        ) => {
+            const currentState =
+                state.educations[payload.educationIndex].description[
+                    payload.descriptionIndex
+                ].checked;
+
+            state.educations[payload.educationIndex].description[
+                payload.descriptionIndex
+            ].checked = !currentState;
+        },
+        editEducationDate: (
+            state,
+            {
+                payload,
+            }: {
+                payload: {
+                    educationIndex: number;
+                    fromDate: Date;
+                    toDate: Date;
+                };
+            }
+        ) => {
+            state.educations[payload.educationIndex].date.from =
+                payload.fromDate;
+            state.educations[payload.educationIndex].date.to = payload.toDate;
+        },
+        editEducationTitle: (
+            state,
+            {
+                payload,
+            }: {
+                payload: {
+                    educationIndex: number;
+                    title: string;
+                };
+            }
+        ) => {
+            state.educations[payload.educationIndex].title = payload.title;
+        },
     },
 });
 
@@ -338,5 +394,9 @@ export const {
     editExperienceTitle,
     addExperience,
     editProjectTitle,
+    addEducationDescription,
+    toggleEducationDescription,
+    editEducationDate,
+    editEducationTitle,
 } = resume.actions;
 export default resume.reducer;

@@ -31,7 +31,10 @@ export type ProjectType = {
 
 export type EducationType = {
     title: string;
-    date: Date;
+    date: {
+        from: Date;
+        to: Date;
+    };
     description: { checked: boolean; value: string; order: number }[];
 };
 

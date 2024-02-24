@@ -293,7 +293,7 @@ export const resumeDummyData: ResumeType = {
     educations: [
         {
             title: "Bachelor of Science in Computer Science",
-            date: new Date("2016-09-01"),
+            date: { to: new Date("2016-09-01"), from: new Date("2015-09-04") },
             description: [
                 {
                     checked: true,

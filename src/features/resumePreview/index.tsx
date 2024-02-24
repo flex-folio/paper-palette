@@ -7,6 +7,7 @@ import {
     Mail as MailIcon,
     Phone as PhoneIcon,
     Linkedin as LinkedinIcon,
+    Github as GithubIcon,
 } from "lucide-react";
 import { useAppSelector } from "@/redux/store";
 import ProjectCard from "./ProjectCard";
@@ -48,7 +49,13 @@ export default function ResumePreview() {
                 ) : null}
                 {resume.socials.map((_socials) => (
                     <SideBarCard
-                        icon={<LinkedinIcon size="0.8em" />}
+                        icon={
+                            _socials.name === "Linkden" ? (
+                                <LinkedinIcon size="0.8em" />
+                            ) : (
+                                <GithubIcon size="0.8em" />
+                            )
+                        }
                         title={_socials.name}
                         caption={_socials.url}
                     />

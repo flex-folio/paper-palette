@@ -17,6 +17,7 @@ import {
     removeSkill,
     removeSocialMedia,
     toggleContactInfo,
+    toggleEducationDescription,
     toggleExperienceDescription,
     toggleProjectDescription,
     toggleProjectTechnologies,
@@ -43,6 +44,9 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { AddEducationDescription } from "./forms/AddEducationDescription";
+import { EditEducationDateForm } from "./forms/EditEducationDateForm";
+import { EditEducationTitleForm } from "./forms/EditEducationTitleForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -430,6 +434,89 @@ export default function ResumeEditor() {
                                 )
                             )}
                             <AddExperienceForm />
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="education">
+                        <AccordionTrigger>
+                            <Heading>Education</Heading>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            {resume.educations.map(
+                                (education, educationIndex) => (
+                                    <Card>
+                                        <CardContent>
+                                            <Label>Title</Label>
+                                            <PointCard>
+                                                <MiniCard
+                                                    value={education.title}
+                                                />
+                                            </PointCard>
+                                            <EditEducationTitleForm
+                                                currentTitle={education.title}
+                                                educationIndex={educationIndex}
+                                            />
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label>From</Label>
+                                                    <PointCard>
+                                                        <MiniCard
+                                                            value={moment(
+                                                                education.date
+                                                                    .from
+                                                            ).format("LL")}
+                                                        />
+                                                    </PointCard>
+                                                </div>
+                                                <div>
+                                                    <Label>To</Label>
+                                                    <PointCard>
+                                                        <MiniCard
+                                                            value={moment(
+                                                                education.date
+                                                                    .to
+                                                            ).format("LL")}
+                                                        />
+                                                    </PointCard>
+                                                </div>
+                                            </div>
+                                            <EditEducationDateForm
+                                                educationIndex={educationIndex}
+                                                date={education.date}
+                                            />
+                                            <Label>Description</Label>
+                                            {education.description.map(
+                                                (point, index) => (
+                                                    <PointCard>
+                                                        <Checkbox
+                                                            onClick={() =>
+                                                                dispatch(
+                                                                    toggleEducationDescription(
+                                                                        {
+                                                                            educationIndex,
+                                                                            descriptionIndex:
+                                                                                index,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }
+                                                            checked={
+                                                                point.checked
+                                                            }
+                                                            className="my-auto"
+                                                        />
+                                                        <MiniCard
+                                                            value={point.value}
+                                                        />
+                                                    </PointCard>
+                                                )
+                                            )}
+                                            <AddEducationDescription
+                                                educationIndex={educationIndex}
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                )
+                            )}
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
