@@ -10,9 +10,13 @@ import { useDispatch } from "react-redux";
 import {
     changeInfoBio,
     removeInfoBio,
+    removeProjectDescription,
+    removeProjectTechnologies,
     removeSkill,
     removeSocialMedia,
     toggleContactInfo,
+    toggleProjectDescription,
+    toggleProjectTechnologies,
     toggleSkill,
     toggleSocialMedia,
 } from "@/redux/features/resumeSlice";
@@ -22,23 +26,23 @@ import { AddSkillForm } from "./forms/AddSkillForm";
 import { AddSocialMedia } from "./forms/AddSocialMedia";
 import { AddContactInfo } from "./forms/AddContactInfo";
 import { EditNameForm } from "./forms/EditNameForm";
+import { Separator } from "@/components/ui/separator";
+import { AddProjectDescriptionForm } from "./forms/AddProjectDescriptionForm";
+import { AddProjectTechnologiesForm } from "./forms/AddProjectTechnologiesForm";
+import { AddProjectForm } from "./forms/AddProjectForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
     const dispatch = useDispatch();
 
     return (
-        <section className="bg-white">
+        <section className="bg-white px-4">
             <section className="space-y-4">
                 <Heading>Profile</Heading>
                 <Card>
                     <CardContent>
                         <Label>Name</Label>
                         <PointCard>
-                            <Checkbox
-                                checked={!!resume.info.name}
-                                className="my-auto"
-                            />
                             <MiniCard
                                 editFunction={() => console.log("ho")}
                                 value={resume.info.name}
@@ -162,6 +166,83 @@ export default function ResumeEditor() {
                         <AddSkillForm />
                     </CardContent>
                 </Card>
+                <Heading>Projects</Heading>
+                {resume.projects.map((project, projectIndex) => (
+                    <Card>
+                        <CardContent>
+                            <Label>Title</Label>
+                            <PointCard>
+                                <MiniCard value={project.title} />
+                            </PointCard>
+                            <Separator className="my-3" />
+                            <Label>Description</Label>
+                            {project.description.map((des, index) => (
+                                <PointCard>
+                                    <Checkbox
+                                        onClick={() =>
+                                            dispatch(
+                                                toggleProjectDescription({
+                                                    project: project.title,
+                                                    index,
+                                                })
+                                            )
+                                        }
+                                        checked={des.checked}
+                                        className="my-auto"
+                                    />
+                                    <MiniCard
+                                        deleteFunction={() =>
+                                            dispatch(
+                                                removeProjectDescription({
+                                                    projectIndex,
+                                                    descriptionIndex: index,
+                                                })
+                                            )
+                                        }
+                                        value={des.value}
+                                    />
+                                </PointCard>
+                            ))}
+                            <AddProjectDescriptionForm
+                                projectName={project.title}
+                            />
+                            <Label>Technologies Used</Label>
+                            <div className="flex flex-wrap gap-x-2">
+                                {project.technologiesUsed.map((tech, index) => (
+                                    <PointCard>
+                                        <Checkbox
+                                            onClick={() =>
+                                                dispatch(
+                                                    toggleProjectTechnologies({
+                                                        project: project.title,
+                                                        index,
+                                                    })
+                                                )
+                                            }
+                                            checked={tech.checked}
+                                            className="my-auto"
+                                        />
+                                        <MiniCard
+                                            deleteFunction={() =>
+                                                dispatch(
+                                                    removeProjectTechnologies({
+                                                        projectIndex,
+                                                        techIndex: index,
+                                                    })
+                                                )
+                                            }
+                                            value={tech.value}
+                                        />
+                                    </PointCard>
+                                ))}
+                            </div>
+                            <AddProjectTechnologiesForm
+                                projectName={project.title}
+                            />
+                        </CardContent>
+                    </Card>
+                ))}
+                <AddProjectForm />
                 <div className="h-44"></div>
             </section>
         </section>

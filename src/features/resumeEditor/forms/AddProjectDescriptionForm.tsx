@@ -11,29 +11,45 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { editName } from "@/redux/features/resumeSlice";
+import {
+    addInfoBio,
+    addProjectDescription,
+} from "@/redux/features/resumeSlice";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    name: z.string().min(1),
+    description: z
+        .string()
+        .min(10, "Bio should atleast 10 characters")
+        .max(100),
 });
 
-export function EditNameForm({ name }: { name: string }) {
+export function AddProjectDescriptionForm({
+    projectName,
+}: {
+    projectName: string;
+}) {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name,
+            description: "",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(editName(values.name));
+        dispatch(
+            addProjectDescription({
+                project: projectName,
+                description: values.description,
+            })
+        );
         setShowForm(false);
         reset();
     }
@@ -44,12 +60,15 @@ export function EditNameForm({ name }: { name: string }) {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an bio</FormLabel>
+                                    <FormLabel>Add description</FormLabel>
                                     <FormControl>
-                                        <Input placeholder={name} {...field} />
+                                        <Textarea
+                                            placeholder="Description"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -73,9 +92,10 @@ export function EditNameForm({ name }: { name: string }) {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Change name
+                        <AddIcon />
+                        Description
                     </Button>
                 </div>
             )}

@@ -1,7 +1,7 @@
 "use client";
 
-import Heading from "@/components/custom/resumePreview/Heading";
-import SideBarCard from "@/components/custom/resumePreview/SideBarCard";
+import Heading from "@/features/resumePreview/Heading";
+import SideBarCard from "@/features/resumePreview/SideBarCard";
 import { Separator } from "@/components/ui/separator";
 import {
     Mail as MailIcon,
@@ -18,7 +18,7 @@ export default function ResumePreview() {
     const resume = useAppSelector((state) => state.resumeReducer);
 
     return (
-        <section className="bg-white w-[7in] min-h-[9.25in] flex shadow-2xl h-fit">
+        <section className="my-auto bg-white w-[7in] min-h-[9.25in] flex shadow-2xl h-fit">
             <aside className="bg-secondary ps-6 px-4 py-10 w-52 min-w-52 space-y-4">
                 <p className="font-semibold">{resume.info.name}</p>
                 {resume.info.bio.map((_bio) => {

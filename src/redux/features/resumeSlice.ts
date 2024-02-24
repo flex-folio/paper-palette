@@ -420,6 +420,97 @@ export const resume = createSlice({
         editName: (state, { payload }: { payload: string }) => {
             state.info.name = payload;
         },
+        toggleProjectDescription: (
+            state,
+            { payload }: { payload: { project: string; index: number } }
+        ) => {
+            state.projects.map((project) => {
+                if (project.title === payload.project) {
+                    const currentState =
+                        project.description[payload.index].checked;
+
+                    project.description[payload.index].checked = !currentState;
+                }
+            });
+        },
+        toggleProjectTechnologies: (
+            state,
+            { payload }: { payload: { project: string; index: number } }
+        ) => {
+            state.projects.map((project) => {
+                if (project.title === payload.project) {
+                    const currentState =
+                        project.technologiesUsed[payload.index].checked;
+
+                    project.technologiesUsed[payload.index].checked =
+                        !currentState;
+                }
+            });
+        },
+        addProjectDescription: (
+            state,
+            { payload }: { payload: { project: string; description: string } }
+        ) => {
+            for (let i = 0; i < state.projects.length; i++) {
+                if (state.projects[i].title == payload.project) {
+                    state.projects[i].description.push({
+                        checked: true,
+                        order: 1,
+                        value: payload.description,
+                    });
+                    break;
+                }
+            }
+        },
+        addProjectTechnologies: (
+            state,
+            { payload }: { payload: { project: string; tech: string } }
+        ) => {
+            for (let i = 0; i < state.projects.length; i++) {
+                if (state.projects[i].title == payload.project) {
+                    state.projects[i].technologiesUsed.push({
+                        checked: true,
+                        order: 1,
+                        value: payload.tech,
+                    });
+                    break;
+                }
+            }
+        },
+        removeProjectDescription: (
+            state,
+            {
+                payload,
+            }: { payload: { projectIndex: number; descriptionIndex: number } }
+        ) => {
+            state.projects[payload.projectIndex].description = state.projects[
+                payload.projectIndex
+            ].description.filter((val, i) => {
+                if (i !== payload.descriptionIndex) return val;
+            });
+        },
+        removeProjectTechnologies: (
+            state,
+            {
+                payload,
+            }: { payload: { projectIndex: number; techIndex: number } }
+        ) => {
+            state.projects[payload.projectIndex].technologiesUsed =
+                state.projects[payload.projectIndex].technologiesUsed.filter(
+                    (val, i) => {
+                        if (i !== payload.techIndex) return val;
+                    }
+                );
+        },
+        addProject: (state, { payload }: { payload: { name: string } }) => {
+            state.projects.push({
+                title: payload.name,
+                description: [],
+                technologiesUsed: [],
+                urls: {},
+                checked: true,
+            });
+        },
     },
 });
 
@@ -436,5 +527,12 @@ export const {
     toggleSocialMedia,
     removeSocialMedia,
     toggleContactInfo,
+    toggleProjectDescription,
+    toggleProjectTechnologies,
+    addProjectDescription,
+    addProjectTechnologies,
+    removeProjectDescription,
+    removeProjectTechnologies,
+    addProject,
 } = resume.actions;
 export default resume.reducer;

@@ -11,9 +11,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addSocialMedia } from "@/redux/features/resumeSlice";
+import { addSkill } from "@/redux/features/resumeSlice";
 import { useState } from "react";
 import {
     Select,
@@ -22,29 +21,29 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { AddIcon } from "@/components/utils/icons";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-    username: z.string().min(1),
-    url: z.string().url(),
-    name: z.string().min(1),
+    heading: z.string().min(1),
+    value: z.string().min(1),
 });
 
-export function AddSocialMedia() {
+export function AddSkillForm() {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
-            url: "",
-            name: "",
+            value: "",
+            heading: "Expertise",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addSocialMedia(values));
+        dispatch(addSkill(values));
         setShowForm(false);
         reset();
     }
@@ -55,24 +54,24 @@ export function AddSocialMedia() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="heading"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Type</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Choose section" />
+                                                <SelectValue placeholder="Choose type" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
                                             <SelectItem value="Expertise">
-                                                Linkden
+                                                Expertise
                                             </SelectItem>
                                             <SelectItem value="Integrations">
-                                                Github
+                                                Integrations
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -82,31 +81,12 @@ export function AddSocialMedia() {
                         />
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="value"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Username</FormLabel>
+                                    <FormLabel>Skill</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Add a bio..."
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="url"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Url</FormLabel>
-                                    <FormControl>
-                                        <Textarea
-                                            placeholder="Add a bio..."
-                                            {...field}
-                                        />
+                                        <Input placeholder="Skill" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -130,9 +110,10 @@ export function AddSocialMedia() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add a social media
+                        <AddIcon />
+                        Skill
                     </Button>
                 </div>
             )}

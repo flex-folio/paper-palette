@@ -11,29 +11,30 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addInfoBio } from "@/redux/features/resumeSlice";
+import { editName } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { ChangeIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    bio: z.string().min(10, "Bio should atleast 10 characters").max(100),
+    name: z.string().min(1),
 });
 
-export function AddBioForm() {
+export function EditNameForm({ name }: { name: string }) {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            bio: "",
+            name,
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addInfoBio(values.bio));
+        dispatch(editName(values.name));
         setShowForm(false);
         reset();
     }
@@ -44,15 +45,12 @@ export function AddBioForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="bio"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Add an bio</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Add a bio..."
-                                            {...field}
-                                        />
+                                        <Input placeholder={name} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -76,9 +74,9 @@ export function AddBioForm() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add points to bio
+                        <ChangeIcon /> Name
                     </Button>
                 </div>
             )}
