@@ -29,7 +29,6 @@ import { AddSkillForm } from "./forms/AddSkillForm";
 import { AddSocialMedia } from "./forms/AddSocialMedia";
 import { AddContactInfo } from "./forms/AddContactInfo";
 import { EditNameForm } from "./forms/EditNameForm";
-import { Separator } from "@/components/ui/separator";
 import { AddProjectDescriptionForm } from "./forms/AddProjectDescriptionForm";
 import { AddProjectTechnologiesForm } from "./forms/AddProjectTechnologiesForm";
 import { AddProjectForm } from "./forms/AddProjectForm";
@@ -38,6 +37,12 @@ import { EditExperienceDateForm } from "./forms/EditExperienceDateForm";
 import { EditExperienceTitleForm } from "./forms/EditExperienceTitleForm";
 import { AddExperienceForm } from "./forms/AddExperienceForm";
 import { EditProjectTitleForm } from "./forms/EditProjectTitleForm";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -46,291 +51,388 @@ export default function ResumeEditor() {
     return (
         <section className="bg-white px-4">
             <section className="space-y-4">
-                <Heading>Profile</Heading>
-                <Card>
-                    <CardContent>
-                        <Label>Name</Label>
-                        <PointCard>
-                            <MiniCard
-                                editFunction={() => console.log("ho")}
-                                value={resume.info.name}
-                            />
-                        </PointCard>
-                        <EditNameForm name={resume.info.name} />
-                        <Label className="mt-auto">Bio</Label>
-                        {resume.info.bio.map((_bio, i) => (
-                            <PointCard>
-                                <Checkbox
-                                    onClick={() => dispatch(changeInfoBio(i))}
-                                    checked={_bio.checked}
-                                    className="my-auto"
-                                />
-                                <MiniCard
-                                    value={_bio.value}
-                                    deleteFunction={() =>
-                                        dispatch(removeInfoBio(i))
-                                    }
-                                />
-                            </PointCard>
-                        ))}
-                        <AddBioForm />
-                        <Label>Contact info</Label>
-                        <PointCard>
-                            <Checkbox
-                                onClick={() =>
-                                    dispatch(
-                                        toggleContactInfo({ type: "email" })
-                                    )
-                                }
-                                checked={resume.info.email.checked}
-                                className="my-auto"
-                            />
-                            <MiniCard value={resume.info.email.value} />
-                        </PointCard>
-                        <PointCard>
-                            <Checkbox
-                                onClick={() =>
-                                    dispatch(
-                                        toggleContactInfo({ type: "phone" })
-                                    )
-                                }
-                                checked={resume.info.phone.checked}
-                                className="my-auto"
-                            />
-                            <MiniCard value={resume.info.phone.value} />
-                        </PointCard>
-                        <AddContactInfo />
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent>
-                        {resume.socials.map((social, i) => (
-                            <>
-                                <Label>{social.name}</Label>
-                                <PointCard>
-                                    <Checkbox
-                                        onClick={() =>
-                                            dispatch(
-                                                toggleSocialMedia({ index: i })
-                                            )
-                                        }
-                                        checked={social.checked}
-                                        className="my-auto"
-                                    />
-                                    <MiniCard
-                                        deleteFunction={() =>
-                                            dispatch(
-                                                removeSocialMedia({ index: i })
-                                            )
-                                        }
-                                        value={social.url}
-                                    />
-                                </PointCard>
-                            </>
-                        ))}
-                        <AddSocialMedia />
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardContent>
-                        {resume.skills.map((skills) => (
-                            <>
-                                <Label className="capitalize">
-                                    {skills.heading}
-                                </Label>
-                                <div className="flex flex-wrap gap-x-2">
-                                    {skills.points.map((skill, index) => (
+                <Accordion
+                    type="single"
+                    collapsible
+                    defaultValue="personal-info">
+                    <AccordionItem value="personal-info">
+                        <AccordionTrigger>
+                            <Heading>Personal Info</Heading>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            <Card>
+                                <CardContent>
+                                    <Label>Name</Label>
+                                    <PointCard>
+                                        <MiniCard
+                                            editFunction={() =>
+                                                console.log("ho")
+                                            }
+                                            value={resume.info.name}
+                                        />
+                                    </PointCard>
+                                    <EditNameForm name={resume.info.name} />
+                                    <Label className="mt-auto">Bio</Label>
+                                    {resume.info.bio.map((_bio, i) => (
                                         <PointCard>
                                             <Checkbox
                                                 onClick={() =>
-                                                    dispatch(
-                                                        toggleSkill({
-                                                            heading:
-                                                                skills.heading,
-                                                            index,
-                                                        })
-                                                    )
+                                                    dispatch(changeInfoBio(i))
                                                 }
-                                                checked={skill.checked}
+                                                checked={_bio.checked}
                                                 className="my-auto"
                                             />
                                             <MiniCard
+                                                value={_bio.value}
                                                 deleteFunction={() =>
-                                                    dispatch(
-                                                        removeSkill({
-                                                            heading:
-                                                                skills.heading,
-                                                            index,
-                                                        })
-                                                    )
+                                                    dispatch(removeInfoBio(i))
                                                 }
-                                                value={skill.value}
                                             />
                                         </PointCard>
                                     ))}
-                                </div>
-                            </>
-                        ))}
-                        <AddSkillForm />
-                    </CardContent>
-                </Card>
-                <Heading>Projects</Heading>
-                {resume.projects.map((project, projectIndex) => (
-                    <Card>
-                        <CardContent>
-                            <Label>Title</Label>
-                            <PointCard>
-                                <MiniCard value={project.title} />
-                            </PointCard>
-                            <EditProjectTitleForm
-                                projectIndex={projectIndex}
-                                currentTitle={project.title}
-                            />
-                            <Label>Description</Label>
-                            {project.description.map((des, index) => (
-                                <PointCard>
-                                    <Checkbox
-                                        onClick={() =>
-                                            dispatch(
-                                                toggleProjectDescription({
-                                                    project: project.title,
-                                                    index,
-                                                })
-                                            )
-                                        }
-                                        checked={des.checked}
-                                        className="my-auto"
-                                    />
-                                    <MiniCard
-                                        deleteFunction={() =>
-                                            dispatch(
-                                                removeProjectDescription({
-                                                    projectIndex,
-                                                    descriptionIndex: index,
-                                                })
-                                            )
-                                        }
-                                        value={des.value}
-                                    />
-                                </PointCard>
-                            ))}
-                            <AddProjectDescriptionForm
-                                projectName={project.title}
-                            />
-                            <Label>Technologies Used</Label>
-                            <div className="flex flex-wrap gap-x-2">
-                                {project.technologiesUsed.map((tech, index) => (
+                                    <AddBioForm />
+                                    <Label>Contact info</Label>
                                     <PointCard>
                                         <Checkbox
                                             onClick={() =>
                                                 dispatch(
-                                                    toggleProjectTechnologies({
-                                                        project: project.title,
-                                                        index,
+                                                    toggleContactInfo({
+                                                        type: "email",
                                                     })
                                                 )
                                             }
-                                            checked={tech.checked}
+                                            checked={resume.info.email.checked}
                                             className="my-auto"
                                         />
                                         <MiniCard
-                                            deleteFunction={() =>
+                                            value={resume.info.email.value}
+                                        />
+                                    </PointCard>
+                                    <PointCard>
+                                        <Checkbox
+                                            onClick={() =>
                                                 dispatch(
-                                                    removeProjectTechnologies({
-                                                        projectIndex,
-                                                        techIndex: index,
+                                                    toggleContactInfo({
+                                                        type: "phone",
                                                     })
                                                 )
                                             }
-                                            value={tech.value}
+                                            checked={resume.info.phone.checked}
+                                            className="my-auto"
                                         />
-                                    </PointCard>
-                                ))}
-                            </div>
-                            <AddProjectTechnologiesForm
-                                projectName={project.title}
-                            />
-                        </CardContent>
-                    </Card>
-                ))}
-                <AddProjectForm />
-                <Heading>Work Experience</Heading>
-                {resume.experiences.map((experience, experienceIndex) => (
-                    <Card>
-                        <CardContent>
-                            <Label>Title</Label>
-                            <PointCard>
-                                <MiniCard
-                                    value={`${experience.position}, ${experience.company}`}
-                                />
-                            </PointCard>
-                            <EditExperienceTitleForm
-                                currentCompany={experience.company}
-                                currentPosition={experience.position}
-                                experienceIndex={experienceIndex}
-                            />
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <Label>From</Label>
-                                    <PointCard>
                                         <MiniCard
-                                            value={moment(
-                                                experience.date.from
-                                            ).format("LL")}
+                                            value={resume.info.phone.value}
                                         />
                                     </PointCard>
-                                </div>
-                                <div>
-                                    <Label>To</Label>
-                                    <PointCard>
-                                        <MiniCard
-                                            value={moment(
-                                                experience.date.to
-                                            ).format("LL")}
+                                    <AddContactInfo />
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardContent>
+                                    {resume.socials.map((social, i) => (
+                                        <>
+                                            <Label>{social.name}</Label>
+                                            <PointCard>
+                                                <Checkbox
+                                                    onClick={() =>
+                                                        dispatch(
+                                                            toggleSocialMedia({
+                                                                index: i,
+                                                            })
+                                                        )
+                                                    }
+                                                    checked={social.checked}
+                                                    className="my-auto"
+                                                />
+                                                <MiniCard
+                                                    deleteFunction={() =>
+                                                        dispatch(
+                                                            removeSocialMedia({
+                                                                index: i,
+                                                            })
+                                                        )
+                                                    }
+                                                    value={social.url}
+                                                />
+                                            </PointCard>
+                                        </>
+                                    ))}
+                                    <AddSocialMedia />
+                                </CardContent>
+                            </Card>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="skills">
+                        <AccordionTrigger>
+                            <Heading>Skills</Heading>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            <Card>
+                                <CardContent>
+                                    {resume.skills.map((skills) => (
+                                        <>
+                                            <Label className="capitalize">
+                                                {skills.heading}
+                                            </Label>
+                                            <div className="flex flex-wrap gap-x-2">
+                                                {skills.points.map(
+                                                    (skill, index) => (
+                                                        <PointCard>
+                                                            <Checkbox
+                                                                onClick={() =>
+                                                                    dispatch(
+                                                                        toggleSkill(
+                                                                            {
+                                                                                heading:
+                                                                                    skills.heading,
+                                                                                index,
+                                                                            }
+                                                                        )
+                                                                    )
+                                                                }
+                                                                checked={
+                                                                    skill.checked
+                                                                }
+                                                                className="my-auto"
+                                                            />
+                                                            <MiniCard
+                                                                deleteFunction={() =>
+                                                                    dispatch(
+                                                                        removeSkill(
+                                                                            {
+                                                                                heading:
+                                                                                    skills.heading,
+                                                                                index,
+                                                                            }
+                                                                        )
+                                                                    )
+                                                                }
+                                                                value={
+                                                                    skill.value
+                                                                }
+                                                            />
+                                                        </PointCard>
+                                                    )
+                                                )}
+                                            </div>
+                                        </>
+                                    ))}
+                                    <AddSkillForm />
+                                </CardContent>
+                            </Card>
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="projects">
+                        <AccordionTrigger>
+                            <Heading>Projects</Heading>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            {resume.projects.map((project, projectIndex) => (
+                                <Card>
+                                    <CardContent>
+                                        <Label>Title</Label>
+                                        <PointCard>
+                                            <MiniCard value={project.title} />
+                                        </PointCard>
+                                        <EditProjectTitleForm
+                                            projectIndex={projectIndex}
+                                            currentTitle={project.title}
                                         />
-                                    </PointCard>
-                                </div>
-                            </div>
-                            <EditExperienceDateForm
-                                date={experience.date}
-                                experienceIndex={experienceIndex}
-                            />
-                            <Label>Desorption</Label>
-                            {experience.points.map((point, index) => (
-                                <PointCard>
-                                    <Checkbox
-                                        onClick={() =>
-                                            dispatch(
-                                                toggleExperienceDescription({
-                                                    experienceIndex,
-                                                    descriptionIndex: index,
-                                                })
+                                        <Label>Description</Label>
+                                        {project.description.map(
+                                            (des, index) => (
+                                                <PointCard>
+                                                    <Checkbox
+                                                        onClick={() =>
+                                                            dispatch(
+                                                                toggleProjectDescription(
+                                                                    {
+                                                                        project:
+                                                                            project.title,
+                                                                        index,
+                                                                    }
+                                                                )
+                                                            )
+                                                        }
+                                                        checked={des.checked}
+                                                        className="my-auto"
+                                                    />
+                                                    <MiniCard
+                                                        deleteFunction={() =>
+                                                            dispatch(
+                                                                removeProjectDescription(
+                                                                    {
+                                                                        projectIndex,
+                                                                        descriptionIndex:
+                                                                            index,
+                                                                    }
+                                                                )
+                                                            )
+                                                        }
+                                                        value={des.value}
+                                                    />
+                                                </PointCard>
                                             )
-                                        }
-                                        checked={point.checked}
-                                        className="my-auto"
-                                    />
-                                    <MiniCard
-                                        deleteFunction={() =>
-                                            dispatch(
-                                                removeExperienceDescription({
-                                                    experienceIndex,
-                                                    descriptionIndex: index,
-                                                })
-                                            )
-                                        }
-                                        value={point.value}
-                                    />
-                                </PointCard>
+                                        )}
+                                        <AddProjectDescriptionForm
+                                            projectName={project.title}
+                                        />
+                                        <Label>Technologies Used</Label>
+                                        <div className="flex flex-wrap gap-x-2">
+                                            {project.technologiesUsed.map(
+                                                (tech, index) => (
+                                                    <PointCard>
+                                                        <Checkbox
+                                                            onClick={() =>
+                                                                dispatch(
+                                                                    toggleProjectTechnologies(
+                                                                        {
+                                                                            project:
+                                                                                project.title,
+                                                                            index,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }
+                                                            checked={
+                                                                tech.checked
+                                                            }
+                                                            className="my-auto"
+                                                        />
+                                                        <MiniCard
+                                                            deleteFunction={() =>
+                                                                dispatch(
+                                                                    removeProjectTechnologies(
+                                                                        {
+                                                                            projectIndex,
+                                                                            techIndex:
+                                                                                index,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }
+                                                            value={tech.value}
+                                                        />
+                                                    </PointCard>
+                                                )
+                                            )}
+                                        </div>
+                                        <AddProjectTechnologiesForm
+                                            projectName={project.title}
+                                        />
+                                    </CardContent>
+                                </Card>
                             ))}
-                            <AddExperienceDescriptionForm
-                                experienceIndex={experienceIndex}
-                            />
-                        </CardContent>
-                    </Card>
-                ))}
-                <AddExperienceForm />
-                <div className="h-44"></div>
+                            <AddProjectForm />
+                        </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="work-experience">
+                        <AccordionTrigger>
+                            <Heading>Work Experience</Heading>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4">
+                            {resume.experiences.map(
+                                (experience, experienceIndex) => (
+                                    <Card>
+                                        <CardContent>
+                                            <Label>Title</Label>
+                                            <PointCard>
+                                                <MiniCard
+                                                    value={`${experience.position}, ${experience.company}`}
+                                                />
+                                            </PointCard>
+                                            <EditExperienceTitleForm
+                                                currentCompany={
+                                                    experience.company
+                                                }
+                                                currentPosition={
+                                                    experience.position
+                                                }
+                                                experienceIndex={
+                                                    experienceIndex
+                                                }
+                                            />
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label>From</Label>
+                                                    <PointCard>
+                                                        <MiniCard
+                                                            value={moment(
+                                                                experience.date
+                                                                    .from
+                                                            ).format("LL")}
+                                                        />
+                                                    </PointCard>
+                                                </div>
+                                                <div>
+                                                    <Label>To</Label>
+                                                    <PointCard>
+                                                        <MiniCard
+                                                            value={moment(
+                                                                experience.date
+                                                                    .to
+                                                            ).format("LL")}
+                                                        />
+                                                    </PointCard>
+                                                </div>
+                                            </div>
+                                            <EditExperienceDateForm
+                                                date={experience.date}
+                                                experienceIndex={
+                                                    experienceIndex
+                                                }
+                                            />
+                                            <Label>Desorption</Label>
+                                            {experience.points.map(
+                                                (point, index) => (
+                                                    <PointCard>
+                                                        <Checkbox
+                                                            onClick={() =>
+                                                                dispatch(
+                                                                    toggleExperienceDescription(
+                                                                        {
+                                                                            experienceIndex,
+                                                                            descriptionIndex:
+                                                                                index,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }
+                                                            checked={
+                                                                point.checked
+                                                            }
+                                                            className="my-auto"
+                                                        />
+                                                        <MiniCard
+                                                            deleteFunction={() =>
+                                                                dispatch(
+                                                                    removeExperienceDescription(
+                                                                        {
+                                                                            experienceIndex,
+                                                                            descriptionIndex:
+                                                                                index,
+                                                                        }
+                                                                    )
+                                                                )
+                                                            }
+                                                            value={point.value}
+                                                        />
+                                                    </PointCard>
+                                                )
+                                            )}
+                                            <AddExperienceDescriptionForm
+                                                experienceIndex={
+                                                    experienceIndex
+                                                }
+                                            />
+                                        </CardContent>
+                                    </Card>
+                                )
+                            )}
+                            <AddExperienceForm />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
             </section>
         </section>
     );
