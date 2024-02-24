@@ -1,5 +1,6 @@
 "use client";
 
+import moment from "moment";
 import Heading from "../resumePreview/Heading";
 import { Label } from "@/components/ui/label";
 import { useAppSelector } from "@/redux/store";
@@ -9,12 +10,14 @@ import PointCard from "./PointCard";
 import { useDispatch } from "react-redux";
 import {
     changeInfoBio,
+    removeExperienceDescription,
     removeInfoBio,
     removeProjectDescription,
     removeProjectTechnologies,
     removeSkill,
     removeSocialMedia,
     toggleContactInfo,
+    toggleExperienceDescription,
     toggleProjectDescription,
     toggleProjectTechnologies,
     toggleSkill,
@@ -30,6 +33,10 @@ import { Separator } from "@/components/ui/separator";
 import { AddProjectDescriptionForm } from "./forms/AddProjectDescriptionForm";
 import { AddProjectTechnologiesForm } from "./forms/AddProjectTechnologiesForm";
 import { AddProjectForm } from "./forms/AddProjectForm";
+import { AddExperienceDescriptionForm } from "./forms/AddExperienceDescriptionForm";
+import { EditExperienceDateForm } from "./forms/EditExperienceDateForm";
+import { EditExperienceTitleForm } from "./forms/EditExperienceTitleForm";
+import { AddExperienceForm } from "./forms/AddExperienceForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -243,6 +250,82 @@ export default function ResumeEditor() {
                     </Card>
                 ))}
                 <AddProjectForm />
+                <Heading>Work Experience</Heading>
+                {resume.experiences.map((experience, experienceIndex) => (
+                    <Card>
+                        <CardContent>
+                            <Label>Title</Label>
+                            <PointCard>
+                                <MiniCard
+                                    value={`${experience.position}, ${experience.company}`}
+                                />
+                            </PointCard>
+                            <EditExperienceTitleForm
+                                currentCompany={experience.company}
+                                currentPosition={experience.position}
+                                experienceIndex={experienceIndex}
+                            />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <Label>From</Label>
+                                    <PointCard>
+                                        <MiniCard
+                                            value={moment(
+                                                experience.date.from
+                                            ).format("LL")}
+                                        />
+                                    </PointCard>
+                                </div>
+                                <div>
+                                    <Label>To</Label>
+                                    <PointCard>
+                                        <MiniCard
+                                            value={moment(
+                                                experience.date.to
+                                            ).format("LL")}
+                                        />
+                                    </PointCard>
+                                </div>
+                            </div>
+                            <EditExperienceDateForm
+                                date={experience.date}
+                                experienceIndex={experienceIndex}
+                            />
+                            <Label>Desorption</Label>
+                            {experience.points.map((point, index) => (
+                                <PointCard>
+                                    <Checkbox
+                                        onClick={() =>
+                                            dispatch(
+                                                toggleExperienceDescription({
+                                                    experienceIndex,
+                                                    descriptionIndex: index,
+                                                })
+                                            )
+                                        }
+                                        checked={point.checked}
+                                        className="my-auto"
+                                    />
+                                    <MiniCard
+                                        deleteFunction={() =>
+                                            dispatch(
+                                                removeExperienceDescription({
+                                                    experienceIndex,
+                                                    descriptionIndex: index,
+                                                })
+                                            )
+                                        }
+                                        value={point.value}
+                                    />
+                                </PointCard>
+                            ))}
+                            <AddExperienceDescriptionForm
+                                experienceIndex={experienceIndex}
+                            />
+                        </CardContent>
+                    </Card>
+                ))}
+                <AddExperienceForm />
                 <div className="h-44"></div>
             </section>
         </section>

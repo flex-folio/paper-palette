@@ -209,6 +209,99 @@ export const resume = createSlice({
                 checked: true,
             });
         },
+        addExperienceDescription: (
+            state,
+            {
+                payload,
+            }: { payload: { experienceIndex: number; description: string } }
+        ) => {
+            state.experiences[payload.experienceIndex].points.push({
+                checked: true,
+                order: 1,
+                value: payload.description,
+            });
+        },
+        toggleExperienceDescription: (
+            state,
+            {
+                payload,
+            }: {
+                payload: { experienceIndex: number; descriptionIndex: number };
+            }
+        ) => {
+            state.experiences[payload.experienceIndex].points.map(
+                (point, index) => {
+                    if (index === payload.descriptionIndex) {
+                        point.checked = !point.checked;
+                    }
+                    return point;
+                }
+            );
+        },
+        removeExperienceDescription: (
+            state,
+            {
+                payload,
+            }: {
+                payload: { experienceIndex: number; descriptionIndex: number };
+            }
+        ) => {
+            state.experiences[payload.experienceIndex].points =
+                state.experiences[payload.experienceIndex].points.filter(
+                    (point, index) => {
+                        if (index !== payload.descriptionIndex) {
+                            return point;
+                        }
+                    }
+                );
+        },
+        editExperienceDate: (
+            state,
+            {
+                payload,
+            }: {
+                payload: {
+                    experienceIndex: number;
+                    fromDate: Date;
+                    toDate: Date;
+                };
+            }
+        ) => {
+            state.experiences[payload.experienceIndex].date.from =
+                payload.fromDate;
+            state.experiences[payload.experienceIndex].date.to = payload.toDate;
+        },
+        editExperienceTitle: (
+            state,
+            {
+                payload,
+            }: {
+                payload: {
+                    experienceIndex: number;
+                    company: string;
+                    position: string;
+                };
+            }
+        ) => {
+            state.experiences[payload.experienceIndex].company =
+                payload.company;
+            state.experiences[payload.experienceIndex].position =
+                payload.position;
+        },
+        addExperience: (
+            state,
+            { payload }: { payload: { company: string; position: string } }
+        ) => {
+            state.experiences.push({
+                company: payload.company,
+                position: payload.position,
+                date: {
+                    to: new Date(),
+                    from: new Date(),
+                },
+                points: [],
+            });
+        },
     },
 });
 
@@ -232,5 +325,11 @@ export const {
     removeProjectDescription,
     removeProjectTechnologies,
     addProject,
+    addExperienceDescription,
+    toggleExperienceDescription,
+    removeExperienceDescription,
+    editExperienceDate,
+    editExperienceTitle,
+    addExperience,
 } = resume.actions;
 export default resume.reducer;
