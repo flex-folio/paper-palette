@@ -12,28 +12,39 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { useDispatch } from "react-redux";
-import { editName } from "@/redux/features/resumeSlice";
+import { addContactInfo, addSocialMedia } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { EditIcon } from "lucide-react";
+import { ChangeIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    name: z.string().min(1),
+    type: z.string().min(1),
+    value: z.string(),
 });
 
-export function EditNameForm({ name }: { name: string }) {
+export function AddContactInfo() {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name,
+            type: "",
+            value: "",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(editName(values.name));
+        dispatch(addContactInfo(values));
         setShowForm(false);
         reset();
     }
@@ -44,12 +55,39 @@ export function EditNameForm({ name }: { name: string }) {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="type"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an bio</FormLabel>
+                                    <FormLabel>Type</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="phone">
+                                                Phone
+                                            </SelectItem>
+                                            <SelectItem value="email">
+                                                Email
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="value"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Info</FormLabel>
                                     <FormControl>
-                                        <Input placeholder={name} {...field} />
+                                        <Input placeholder="Info" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -73,9 +111,9 @@ export function EditNameForm({ name }: { name: string }) {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Change name
+                        <ChangeIcon /> Contact Info
                     </Button>
                 </div>
             )}

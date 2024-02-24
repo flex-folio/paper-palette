@@ -1,17 +1,19 @@
-import ResumeEditor from "@/components/custom/resumeEditor";
-import ResumePreview from "@/components/custom/resumePreview/index";
+import ResumeEditor from "@/features/resumeEditor";
+import ResumePreview from "@/features/resumePreview/index";
 import Navbar from "@/components/layout/Navbar";
 
 export default function Home() {
     return (
-        <>
+        <div className="h-screen">
             <Navbar />
-            <main className="grid grid-cols-2 mt-20 container gap-8">
-                <div className="h-screen overflow-auto">
+            <main className="grid grid-cols-2 container gap-8">
+                <div className="h-screen overflow-auto py-24">
                     <ResumeEditor />
                 </div>
-                <ResumePreview />
+                <div className="flex align-middle pt-14">
+                    <ResumePreview />
+                </div>
             </main>
-        </>
+        </div>
     );
 }

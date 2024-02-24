@@ -11,38 +11,45 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addContactInfo, addSocialMedia } from "@/redux/features/resumeSlice";
-import { useState } from "react";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+    addInfoBio,
+    addProjectDescription,
+} from "@/redux/features/resumeSlice";
+import { useState } from "react";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    type: z.string().min(1),
-    value: z.string(),
+    description: z
+        .string()
+        .min(10, "Bio should atleast 10 characters")
+        .max(100),
 });
 
-export function AddContactInfo() {
+export function AddProjectDescriptionForm({
+    projectName,
+}: {
+    projectName: string;
+}) {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            type: "",
-            value: "",
+            description: "",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addContactInfo(values));
+        dispatch(
+            addProjectDescription({
+                project: projectName,
+                description: values.description,
+            })
+        );
         setShowForm(false);
         reset();
     }
@@ -53,40 +60,13 @@ export function AddContactInfo() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="type"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Type</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Choose type" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="phone">
-                                                Phone
-                                            </SelectItem>
-                                            <SelectItem value="email">
-                                                Email
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="value"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Value</FormLabel>
+                                    <FormLabel>Add description</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Add value"
+                                        <Textarea
+                                            placeholder="Description"
                                             {...field}
                                         />
                                     </FormControl>
@@ -112,9 +92,10 @@ export function AddContactInfo() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Edit contact info
+                        <AddIcon />
+                        Description
                     </Button>
                 </div>
             )}

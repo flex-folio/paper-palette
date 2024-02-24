@@ -16,6 +16,7 @@ import { addProject } from "@/redux/features/resumeSlice";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
     name: z.string().min(1),
@@ -52,12 +53,10 @@ export function AddProjectForm() {
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>
-                                                Add an project
-                                            </FormLabel>
+                                            <FormLabel>Add project</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Project name..."
+                                                    placeholder="Project name"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -85,9 +84,9 @@ export function AddProjectForm() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add a project
+                        <AddIcon /> Project
                     </Button>
                 </div>
             )}

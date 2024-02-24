@@ -12,37 +12,38 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { useDispatch } from "react-redux";
-import { addProjectTechnologies } from "@/redux/features/resumeSlice";
+import { addSkill } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { AddIcon } from "@/components/utils/icons";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-    tech: z.string().min(1),
+    heading: z.string().min(1),
+    value: z.string().min(1),
 });
 
-export function AddProjectTechnologiesForm({
-    projectName,
-}: {
-    projectName: string;
-}) {
+export function AddSkillForm() {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            tech: "",
+            value: "",
+            heading: "Expertise",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(
-            addProjectTechnologies({
-                project: projectName,
-                tech: values.tech,
-            })
-        );
+        dispatch(addSkill(values));
         setShowForm(false);
         reset();
     }
@@ -53,15 +54,39 @@ export function AddProjectTechnologiesForm({
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="tech"
+                            name="heading"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an tech</FormLabel>
+                                    <FormLabel>Type</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose type" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="Expertise">
+                                                Expertise
+                                            </SelectItem>
+                                            <SelectItem value="Integrations">
+                                                Integrations
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="value"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Skill</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Add a tech..."
-                                            {...field}
-                                        />
+                                        <Input placeholder="Skill" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -85,9 +110,10 @@ export function AddProjectTechnologiesForm({
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add tech
+                        <AddIcon />
+                        Skill
                     </Button>
                 </div>
             )}

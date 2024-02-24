@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
 import { addInfoBio } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
     bio: z.string().min(10, "Bio should atleast 10 characters").max(100),
@@ -47,10 +48,10 @@ export function AddBioForm() {
                             name="bio"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an bio</FormLabel>
+                                    <FormLabel>Add bio</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Add a bio..."
+                                            placeholder="Bio"
                                             {...field}
                                         />
                                     </FormControl>
@@ -76,9 +77,9 @@ export function AddBioForm() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add points to bio
+                        <AddIcon /> Bio
                     </Button>
                 </div>
             )}

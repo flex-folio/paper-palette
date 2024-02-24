@@ -36,7 +36,7 @@ export default function ResumeEditor() {
     const dispatch = useDispatch();
 
     return (
-        <section className="bg-white">
+        <section className="bg-white px-4">
             <section className="space-y-4">
                 <Heading>Profile</Heading>
                 <Card>

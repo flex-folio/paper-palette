@@ -11,44 +11,30 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import {
-    addInfoBio,
-    addProjectDescription,
-} from "@/redux/features/resumeSlice";
+import { editName } from "@/redux/features/resumeSlice";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { ChangeIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    description: z
-        .string()
-        .min(10, "Bio should atleast 10 characters")
-        .max(100),
+    name: z.string().min(1),
 });
 
-export function AddProjectDescriptionForm({
-    projectName,
-}: {
-    projectName: string;
-}) {
+export function EditNameForm({ name }: { name: string }) {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            description: "",
+            name,
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(
-            addProjectDescription({
-                project: projectName,
-                description: values.description,
-            })
-        );
+        dispatch(editName(values.name));
         setShowForm(false);
         reset();
     }
@@ -59,15 +45,12 @@ export function AddProjectDescriptionForm({
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="description"
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Add an description</FormLabel>
+                                    <FormLabel>Add an bio</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Add a description..."
-                                            {...field}
-                                        />
+                                        <Input placeholder={name} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -91,9 +74,9 @@ export function AddProjectDescriptionForm({
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add points to description
+                        <ChangeIcon /> Name
                     </Button>
                 </div>
             )}

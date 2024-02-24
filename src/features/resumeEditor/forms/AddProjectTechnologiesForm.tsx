@@ -11,38 +11,39 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { useDispatch } from "react-redux";
-import { addSkill } from "@/redux/features/resumeSlice";
+import { addProjectTechnologies } from "@/redux/features/resumeSlice";
 import { useState } from "react";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
-    heading: z.string().min(1),
-    value: z.string().min(1),
+    tech: z.string().min(1),
 });
 
-export function AddSkillForm() {
+export function AddProjectTechnologiesForm({
+    projectName,
+}: {
+    projectName: string;
+}) {
     const [showForm, setShowForm] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            value: "",
-            heading: "Expertise",
+            tech: "",
         },
         mode: "onTouched",
     });
     const { reset } = form;
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        dispatch(addSkill(values));
+        dispatch(
+            addProjectTechnologies({
+                project: projectName,
+                tech: values.tech,
+            })
+        );
         setShowForm(false);
         reset();
     }
@@ -53,40 +54,13 @@ export function AddSkillForm() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
-                            name="heading"
+                            name="tech"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Heading</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Choose section" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="Expertise">
-                                                Expertise
-                                            </SelectItem>
-                                            <SelectItem value="Integrations">
-                                                Integrations
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="value"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Heading</FormLabel>
+                                    <FormLabel>Add technology</FormLabel>
                                     <FormControl>
-                                        <Textarea
-                                            placeholder="Add a bio..."
+                                        <Input
+                                            placeholder="Technology"
                                             {...field}
                                         />
                                     </FormControl>
@@ -112,9 +86,9 @@ export function AddSkillForm() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add a skill
+                        <AddIcon /> Technologies
                     </Button>
                 </div>
             )}

@@ -22,6 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { AddIcon } from "@/components/utils/icons";
 
 const formSchema = z.object({
     username: z.string().min(1),
@@ -58,20 +59,20 @@ export function AddSocialMedia() {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Type</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Choose section" />
+                                                <SelectValue placeholder="Choose type" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Expertise">
+                                            <SelectItem value="Linkden">
                                                 Linkden
                                             </SelectItem>
-                                            <SelectItem value="Integrations">
+                                            <SelectItem value="Github">
                                                 Github
                                             </SelectItem>
                                         </SelectContent>
@@ -88,7 +89,7 @@ export function AddSocialMedia() {
                                     <FormLabel>Username</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Add a bio..."
+                                            placeholder="Username"
                                             {...field}
                                         />
                                     </FormControl>
@@ -101,10 +102,10 @@ export function AddSocialMedia() {
                             name="url"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Url</FormLabel>
+                                    <FormLabel>URL</FormLabel>
                                     <FormControl>
                                         <Textarea
-                                            placeholder="Add a bio..."
+                                            placeholder="URL"
                                             {...field}
                                         />
                                     </FormControl>
@@ -130,9 +131,10 @@ export function AddSocialMedia() {
                 <div>
                     <Button
                         onClick={() => setShowForm(true)}
-                        className="w-full border-2 border-blue-200 border-dashed"
+                        className="w-full border-2 border-accent border-dashed"
                         variant="ghost">
-                        Add a social media
+                        <AddIcon />
+                        Socials
                     </Button>
                 </div>
             )}
