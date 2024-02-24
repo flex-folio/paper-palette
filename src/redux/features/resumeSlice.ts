@@ -209,6 +209,12 @@ export const resume = createSlice({
                 checked: true,
             });
         },
+        editProjectTitle: (
+            state,
+            { payload }: { payload: { projectIndex: number; title: string } }
+        ) => {
+            state.projects[payload.projectIndex].title = payload.title;
+        },
         addExperienceDescription: (
             state,
             {
@@ -331,5 +337,6 @@ export const {
     editExperienceDate,
     editExperienceTitle,
     addExperience,
+    editProjectTitle,
 } = resume.actions;
 export default resume.reducer;

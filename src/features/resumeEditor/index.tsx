@@ -37,6 +37,7 @@ import { AddExperienceDescriptionForm } from "./forms/AddExperienceDescriptionFo
 import { EditExperienceDateForm } from "./forms/EditExperienceDateForm";
 import { EditExperienceTitleForm } from "./forms/EditExperienceTitleForm";
 import { AddExperienceForm } from "./forms/AddExperienceForm";
+import { EditProjectTitleForm } from "./forms/EditProjectTitleForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -181,7 +182,10 @@ export default function ResumeEditor() {
                             <PointCard>
                                 <MiniCard value={project.title} />
                             </PointCard>
-                            <Separator className="my-3" />
+                            <EditProjectTitleForm
+                                projectIndex={projectIndex}
+                                currentTitle={project.title}
+                            />
                             <Label>Description</Label>
                             {project.description.map((des, index) => (
                                 <PointCard>
