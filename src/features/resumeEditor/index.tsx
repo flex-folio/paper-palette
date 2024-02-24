@@ -47,6 +47,7 @@ import {
 import { AddEducationDescription } from "./forms/AddEducationDescription";
 import { EditEducationDateForm } from "./forms/EditEducationDateForm";
 import { EditEducationTitleForm } from "./forms/EditEducationTitleForm";
+import { AddEducationForm } from "./forms/AddEducationForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -517,6 +518,7 @@ export default function ResumeEditor() {
                                     </Card>
                                 )
                             )}
+                            <AddEducationForm />
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>

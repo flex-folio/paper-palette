@@ -364,6 +364,16 @@ export const resume = createSlice({
         ) => {
             state.educations[payload.educationIndex].title = payload.title;
         },
+        addEducation: (state, { payload }: { payload: { name: string } }) => {
+            state.educations.push({
+                title: payload.name,
+                date: {
+                    to: new Date(),
+                    from: new Date(),
+                },
+                description: [],
+            });
+        },
     },
 });
 
@@ -398,5 +408,6 @@ export const {
     toggleEducationDescription,
     editEducationDate,
     editEducationTitle,
+    addEducation,
 } = resume.actions;
 export default resume.reducer;
