@@ -12,6 +12,7 @@ export type ResumeType = {
     projects: ProjectType[];
     educations: EducationType[];
     experiences: ExperienceType[];
+    order: [];
 };
 
 export type ProjectType = {

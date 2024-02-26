@@ -26,7 +26,7 @@ export const resumeDummyData: ResumeType = {
             },
             {
                 checked: false,
-                value: "Secondary bio",
+                value: "Highly skilled and motivated Marketing Specialist with 8 years of experience in the fast-paced world of digital marketing.",
             },
         ],
     },

@@ -10,6 +10,8 @@ import PointCard from "./PointCard";
 import { useDispatch } from "react-redux";
 import {
     changeInfoBio,
+    changeInfoPosition,
+    deleteInfoPosition,
     removeExperienceDescription,
     removeInfoBio,
     removeProjectDescription,
@@ -48,6 +50,7 @@ import { AddEducationDescription } from "./forms/AddEducationDescription";
 import { EditEducationDateForm } from "./forms/EditEducationDateForm";
 import { EditEducationTitleForm } from "./forms/EditEducationTitleForm";
 import { AddEducationForm } from "./forms/AddEducationForm";
+import { AddInfoPositionForm } from "./forms/AddInfoPositionForm";
 
 export default function ResumeEditor() {
     const resume = useAppSelector((state) => state.resumeReducer);
@@ -69,14 +72,38 @@ export default function ResumeEditor() {
                                 <CardContent>
                                     <Label>Name</Label>
                                     <PointCard>
-                                        <MiniCard
-                                            editFunction={() =>
-                                                console.log("ho")
-                                            }
-                                            value={resume.info.name}
-                                        />
+                                        <MiniCard value={resume.info.name} />
                                     </PointCard>
                                     <EditNameForm name={resume.info.name} />
+                                    <Label>Position</Label>
+                                    {resume.info.position.map(
+                                        (position, index) => (
+                                            <PointCard>
+                                                <Checkbox
+                                                    onClick={() =>
+                                                        dispatch(
+                                                            changeInfoPosition({
+                                                                index,
+                                                            })
+                                                        )
+                                                    }
+                                                    checked={position.checked}
+                                                    className="my-auto"
+                                                />
+                                                <MiniCard
+                                                    deleteFunction={() =>
+                                                        dispatch(
+                                                            deleteInfoPosition({
+                                                                index,
+                                                            })
+                                                        )
+                                                    }
+                                                    value={position.value}
+                                                />
+                                            </PointCard>
+                                        )
+                                    )}
+                                    <AddInfoPositionForm />
                                     <Label className="mt-auto">Bio</Label>
                                     {resume.info.bio.map((_bio, i) => (
                                         <PointCard>

@@ -374,6 +374,35 @@ export const resume = createSlice({
                 description: [],
             });
         },
+        changeInfoPosition: (
+            state,
+            { payload }: { payload: { index: number } }
+        ) => {
+            state.info.position.map((pos, index) => {
+                if (index === payload.index) {
+                    pos.checked = true;
+                } else {
+                    pos.checked = false;
+                }
+            });
+        },
+        deleteInfoPosition: (
+            state,
+            { payload }: { payload: { index: number } }
+        ) => {
+            state.info.position = state.info.position.filter((pos, index) => {
+                if (index !== payload.index) return pos;
+            });
+        },
+        addInfoPosition: (
+            state,
+            { payload }: { payload: { value: string } }
+        ) => {
+            state.info.position.push({
+                checked: false,
+                value: payload.value,
+            });
+        },
     },
 });
 
@@ -409,5 +438,8 @@ export const {
     editEducationDate,
     editEducationTitle,
     addEducation,
+    changeInfoPosition,
+    deleteInfoPosition,
+    addInfoPosition,
 } = resume.actions;
 export default resume.reducer;
